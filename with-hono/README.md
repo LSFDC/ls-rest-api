@@ -192,7 +192,7 @@ with-hono/
 
    ```bash
    git clone https://github.com/LSFDC/ls-rest-api.git
-   cd rest-api/with-hono
+   cd ls-rest-api/with-hono
    ```
 
 2. **Install dependencies:**
