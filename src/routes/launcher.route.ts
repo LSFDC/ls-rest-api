@@ -147,29 +147,57 @@ launcherRoute.post(
 
     const randSvrID = serverInfo[Math.floor(Math.random() * serverInfo.length)];
 
+    // --- ENCRYPTED VALUES DETAIL ---
+    // encryptedUserKey: User's encodeKey encrypted with server encodeKey and NationType.NT_KOREA
     const encryptedUserKey = Encode15(
       existUser.encodeKey,
       serverKey.encodeKey,
       NationType.NT_KOREA
     );
 
+    // ecnryptedUserID: User's userID encrypted with server encodeKey and NationType.NT_KOREA
     const ecnryptedUserID = Encode15(
       existUser.userID,
       serverKey.encodeKey,
       NationType.NT_KOREA
     );
 
+    // encryptedUserIP: User's public IP encrypted with server encodeKey and NationType.NT_KOREA
     const encryptedUserIP = Encode15(
       publicIP,
       serverKey.encodeKey,
       NationType.NT_KOREA
     );
 
-    let result = `EDEW3940FVDP4950,10,20,30,1,autoupgrade_info.ini,1000,0,1,0,?${encryptedUserKey}${ecnryptedUserID}?0?${encryptedUserKey}${encryptedUserIP}?${randSvrID}?2010,7,15,1?10201?`;
+    /*
+      --- RESULT STRING DETAIL ---
+      Format:
+      EDEW3940FVDP4950,10,20,30,1,autoupgrade_info.ini,1000,0,1,0,?
+        {encryptedUserKey}{ecnryptedUserID}?
+        0?
+        {encryptedUserKey}{encryptedUserIP}?
+        {randSvrID.serverID}?
+        2010,7,15,1?
+        10201?
+
+      Breakdown:
+      - EDEW3940FVDP4950: Static identifier/version
+      - 10,20,30,1: Static config/version numbers
+      - autoupgrade_info.ini: INI file for auto-upgrade
+      - 1000,0,1,0: Static config values
+      - ?{encryptedUserKey}{ecnryptedUserID}?: Encrypted user key + user ID
+      - 0?: Static flag
+      - {encryptedUserKey}{encryptedUserIP}?: Encrypted user key + user public IP/user real IP
+      - {randSvrID.serverID}?: Random server ID
+      - 2010,7,15,1?: Static date/version
+      - 10201?: Build/version code
+    */
+
+    let result = `EDEW3940FVDP4950,10,20,30,1,autoupgrade_info.ini,1000,0,1,0,?${encryptedUserKey}${ecnryptedUserID}?0?${encryptedUserKey}${encryptedUserIP}?${randSvrID.serverID}?2010,7,15,1?10201?`;
 
     return c.json({
       message: "success",
-      AppName: "lostsaga.exe", //lostsaga.exe
+      AppName: "lswebbroker.exe", //lostsaga.exe
       result,
     });
   }
